@@ -42,10 +42,9 @@ COPY --chown=appuser:appgroup --from=build /app/prisma ./prisma
 USER appuser
 EXPOSE 8080
 
-# Environment (Peut être surchargé par Azure App Service)
+# Environment 
 ENV NODE_ENV=production
 ENV PORT=8080
 
 # Start command
-# Using node direct execution instead of npm start to avoid npm vulnerabilities
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node src/server.js"]
