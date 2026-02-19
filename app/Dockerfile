@@ -2,8 +2,8 @@
 FROM node:20-alpine AS base
 WORKDIR /app
 
-# Installer OpenSSL pour Prisma (build & run)
-RUN apk add --no-cache openssl
+# Upgrade OS packages to fix vulnerabilities
+RUN apk update && apk upgrade --no-cache && apk add --no-cache openssl
 COPY package*.json ./
 
 # ---- Dependencies ----
