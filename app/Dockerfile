@@ -9,7 +9,8 @@ COPY package*.json ./
 # ---- Dependencies ----
 FROM base AS dependencies
 # Installer dépendances production UNIQUEMENT
-RUN npm install --only=production
+# Force l'utilisation du package-lock.json à jour qui contient les correctifs
+RUN npm ci --only=production
 COPY prisma ./prisma/
 
 # ---- Build ----
