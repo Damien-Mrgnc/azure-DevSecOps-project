@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= config.siteTitle %>
+    </title>
+    <!-- Modern CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+
+<body class="theme-<%= config.theme %>">
+
+    <div class="container">
+
+        <% if (config.maintenanceMode) { %>
+            <div class="maintenance-container">
+                <div class="maintenance-icon">🚧</div>
+                <h1>We'll be back soon!</h1>
+                <p class="subtitle">Maintenance is currently underway to improve your experience.</p>
+            </div>
+            <% } else { %>
+
+                <header>
+                    <div class="logo">🚀</div>
+                    <h1>
+                        <%= config.siteTitle %>
+                    </h1>
+                    <p class="subtitle">
+                        <%= config.siteDescription %>
+                    </p>
+                </header>
+
+                <main>
+                    <div class="card">
+                        <h2>Welcome to the Portal</h2>
+                        <p>This is a dynamic application running on <strong>Node.js</strong> and <strong>Azure</strong>.
+                        </p>
+                        <p class="mt-4">
+                            Current Theme: <span class="badge">
+                                <%= config.theme %>
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="/admin" class="btn btn-primary">Go to Admin Panel</a>
+                    </div>
+                </main>
+
+                <footer class="text-center mt-4" style="opacity: 0.6; font-size: 0.9rem;">
+                    &copy; <%= new Date().getFullYear() %> Runtime Governance App
+                </footer>
+
+                <% } %>
+
+    </div>
+
+</body>
+
+</html>

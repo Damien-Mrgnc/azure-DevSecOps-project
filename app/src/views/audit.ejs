@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs - Runtime Governance</title>
+    <!-- Modern CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+
+<body class="theme-<%= config.theme %>">
+
+    <div class="container" style="max-width: 1000px;">
+
+        <header>
+            <h1>Configuration <span style="font-weight: 300;">Audit Trail</span></h1>
+            <p class="subtitle">Detailed history of all changes made to the application.</p>
+        </header>
+
+        <div class="card">
+            <h2>Activity Log</h2>
+            <div style="overflow-x: auto; margin-top: 1rem;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid var(--border-light);">
+                            <th style="padding: 1rem 0.5rem;">Timestamp</th>
+                            <th style="padding: 1rem 0.5rem;">User</th>
+                            <th style="padding: 1rem 0.5rem;">Key</th>
+                            <th style="padding: 1rem 0.5rem;">Old Value</th>
+                            <th style="padding: 1rem 0.5rem;">New Value</th>
+                            <th style="padding: 1rem 0.5rem;">Correlation ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (logs.length===0) { %>
+                            <tr>
+                                <td colspan="6" class="text-center" style="padding: 2rem;">No logs found.</td>
+                            </tr>
+                            <% } else { %>
+                                <% logs.forEach(log=> { %>
+                                    <tr style="border-bottom: 1px solid var(--border-light);">
+                                        <td style="padding: 0.75rem 0.5rem; font-size: 0.9rem;">
+                                            <%= new Date(log.changedAt).toLocaleString() %>
+                                        </td>
+                                        <td style="padding: 0.75rem 0.5rem;">
+                                            <span class="badge"
+                                                style="background: var(--surface-dark); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">
+                                                <%= log.changedBy %>
+                                            </span>
+                                        </td>
+                                        <td style="padding: 0.75rem 0.5rem; font-weight: bold;">
+                                            <%= log.keyName %>
+                                        </td>
+                                        <td style="padding: 0.75rem 0.5rem; color: var(--error);">
+                                            <%= log.oldValue %>
+                                        </td>
+                                        <td style="padding: 0.75rem 0.5rem; color: var(--success);">
+                                            <%= log.newValue %>
+                                        </td>
+                                        <td
+                                            style="padding: 0.75rem 0.5rem; font-family: monospace; font-size: 0.8rem; color: var(--secondary-color);">
+                                            <%= log.correlationId.substring(0, 8) %>...
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center mt-4" style="display: flex; justify-content: center; gap: 1rem;">
+            <a href="/admin" class="btn btn-primary">Configuration Panel</a>
+            <a href="/" class="btn btn-secondary">Back to Site</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

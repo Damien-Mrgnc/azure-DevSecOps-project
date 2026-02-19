@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"] // Mandatory for Alpine container
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+// Configuration table
+model AppConfig {
+  keyName   String   @id @db.NVarChar(200)
+  value     String?  @db.NVarChar(Max)
+  updatedAt DateTime @updatedAt @db.DateTime2
+  updatedBy String?  @db.NVarChar(256)
+}
+
+// Audit table
+model AppConfigAudit {
+  id            Int      @id @default(autoincrement())
+  keyName       String   @db.NVarChar(200)
+  oldValue      String?  @db.NVarChar(Max)
+  newValue      String?  @db.NVarChar(Max)
+  changedBy     String?  @db.NVarChar(256)
+  changedAt     DateTime @default(now()) @db.DateTime2
+  correlationId String?  @db.NVarChar(100)
+}

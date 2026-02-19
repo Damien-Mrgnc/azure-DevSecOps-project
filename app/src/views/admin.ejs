@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Runtime Governance</title>
+    <!-- Modern CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+
+<body class="theme-<%= config.theme %>">
+
+    <div class="container">
+
+        <header>
+            <h1>Runtime Governance <span style="font-weight: 300;">Console</span></h1>
+            <p class="subtitle">Dynamic configuration management</p>
+        </header>
+
+        <% if (error) { %>
+            <div class="card" style="border-left: 4px solid var(--error);">
+                <h3 style="color: var(--error);">Error</h3>
+                <p>
+                    <%= error %>
+                </p>
+            </div>
+            <% } %>
+
+                <div class="card">
+                    <h2 class="mb-4">Global Configuration</h2>
+
+                    <form id="configForm">
+                        <div class="form-group">
+                            <label for="siteTitle">Site Title</label>
+                            <input type="text" id="siteTitle" name="siteTitle" value="<%= config.siteTitle %>" required
+                                placeholder="Enter site title...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="siteDescription">Site Description</label>
+                            <input type="text" id="siteDescription" name="siteDescription"
+                                value="<%= config.siteDescription %>" required placeholder="Enter site description...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="theme">Theme</label>
+                            <select id="theme" name="theme">
+                                <option value="light" <%=config.theme==='light' ? 'selected' : '' %>>Light Mode</option>
+                                <option value="dark" <%=config.theme==='dark' ? 'selected' : '' %>>Dark Mode</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group"
+                            style="display: flex; align-items: center; justify-content: space-between;">
+                            <label for="maintenanceMode" style="margin: 0; cursor: pointer;">Maintenance Mode</label>
+                            <label class="switch">
+                                <input type="checkbox" id="maintenanceMode" name="maintenanceMode"
+                                    <%=config.maintenanceMode ? 'checked' : '' %>>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div style="text-align: right; margin-top: 2rem;">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-center">
+                    <a href="/" class="btn btn-secondary">← Back to Site</a>
+                </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-icon">✅</span>
+        <span id="toast-message">Configuration saved successfully!</span>
+    </div>
+
+    <script>
+        const toast = document.getElementById('toast');
+        const showToast = (message, type = 'success') => {
+            const icon = type === 'success' ? '✅' : '❌';
+            document.getElementById('toast-icon').textContent = icon;
+            document.getElementById('toast-message').textContent = message;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        };
+
+        document.getElementById('configForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+
+            // Loading state
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+
+            const formData = new FormData(e.target);
+
+            // Conversion checkbox -> boolean
+            const payload = {
+                siteTitle: formData.get('siteTitle'),
+                siteDescription: formData.get('siteDescription'),
+                theme: formData.get('theme'),
+                maintenanceMode: formData.get('maintenanceMode') === 'on'
+            };
+
+            try {
+                const response = await fetch('/api/admin/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showToast('Configuration updated successfully!');
+                    // Live Theme Update
+                    document.body.className = `theme-${payload.theme}`;
+                } else {
+                    const error = await response.json();
+                    showToast(error.message || 'Update failed', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Network Error', 'error');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

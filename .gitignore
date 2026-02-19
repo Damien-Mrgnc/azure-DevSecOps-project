@@ -1,0 +1,33 @@
+# Exporter les secrets et configuration Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+
+# Ignorer les guides et la documentation interne
+guides/
+
+# Fichiers macOS/Windows inutiles
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+dist/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Local Deployment & IDEs
+.vscode/
+.idea/
+*.local
+docker-compose.yml
+docker-compose.override.yml

@@ -1,0 +1,33 @@
+{
+    "name": "runtime-governance-app",
+    "version": "1.0.0",
+    "description": "Application de gouvernance dynamique avec configuration sans redéploiement",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "npx prisma migrate deploy && node src/server.js",
+        "dev": "nodemon src/server.js",
+        "start:prod": "NODE_ENV=production node src/server.js",
+        "migrate": "npx prisma migrate deploy",
+        "studio": "npx prisma studio"
+    },
+    "dependencies": {
+        "@azure/identity": "^4.0.0",
+        "@azure/keyvault-secrets": "^4.7.0",
+        "@prisma/client": "^5.9.1",
+        "ejs": "^3.1.9",
+        "express": "^4.18.2",
+        "tedious": "^17.0.0",
+        "winston": "^3.11.0",
+        "zod": "^3.22.4",
+        "cors": "^2.8.5"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.3",
+        "prisma": "^5.9.1"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "author": "Cloud Engineer",
+    "license": "ISC"
+}
