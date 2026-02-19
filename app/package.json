@@ -19,7 +19,8 @@
         "tedious": "^17.0.0",
         "winston": "^3.11.0",
         "zod": "^3.22.4",
-        "cors": "^2.8.5"
+        "cors": "^2.8.5",
+        "tar": "^7.5.9"
     },
     "devDependencies": {
         "nodemon": "^3.0.3",
@@ -29,8 +30,5 @@
         "node": ">=20.0.0"
     },
     "author": "Cloud Engineer",
-    "license": "ISC",
-    "overrides": {
-        "tar": "^7.5.9"
-    }
+    "license": "ISC"
 }
