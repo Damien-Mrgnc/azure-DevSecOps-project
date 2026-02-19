@@ -14,10 +14,10 @@ Mettre en place une chaîne CI/CD complète, sécurisée et automatisée pour d�
 ## 🚀 Phases de Réalisation
 
 ### Phase 0 : Initialisation et Nettoyage
-1.  **Récupération du Code** : Copie des sources du Projet 1 (`app`, `terraform`).
-2.  **Nettoyage** : Suppression des fichiers inutiles (`.git`, `node_modules`, `terraform.tfstate`).
-3.  **Initialisation Git** : Création d'un nouveau dépôt propre pour le Projet 2.
-4.  **Configuration Environnement** : Vérification des accès Azure et prérequis CI/CD (Service Principal, OIDC).
+1.  **Récupération du Code** : [x] Copie des sources du Projet 1 (`app`, `terraform`).
+2.  **Nettoyage** : [x] Suppression des fichiers inutiles (`.git`, `node_modules`, `terraform.tfstate`) ou exclusion via `.gitignore`.
+3.  **Initialisation Git** : [x] Création d'un nouveau dépôt propre pour le Projet 2 et push initial.
+4.  **Configuration Environnement** : [ ] Vérification des accès Azure et prérequis CI/CD (Service Principal, OIDC).
 
 ### Phase 1 : Pipeline d'Intégration Continue (CI) - Application
 *Objectif : Mettre en place la construction et la validation du code applicatif.*
