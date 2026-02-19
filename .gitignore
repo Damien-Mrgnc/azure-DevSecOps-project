@@ -30,4 +30,3 @@ yarn-error.log*
 .idea/
 *.local
 docker-compose.yml
-docker-compose.override.yml
