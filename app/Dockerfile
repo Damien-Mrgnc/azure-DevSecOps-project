@@ -27,8 +27,8 @@ WORKDIR /app
 # Sécurité : créer utilisateur non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-# Installer OpenSSL pour Prisma et supprimer NPM pour réduire la surface d'attaque
-RUN apk add --no-cache openssl && npm uninstall -g npm
+# Installer OpenSSL pour Prisma et mettre à jour NPM pour corriger les vulnérabilités
+RUN apk add --no-cache openssl && npm install -g npm@latest
 
 # Copier les fichiers nécessaires depuis les étapes précédentes avec les bonnes permissions
 COPY --chown=appuser:appgroup --from=dependencies /app/node_modules ./node_modules
