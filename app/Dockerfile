@@ -35,6 +35,7 @@ COPY --chown=appuser:appgroup --from=dependencies /app/node_modules ./node_modul
 COPY --chown=appuser:appgroup --from=build /app/node_modules/.prisma ./node_modules/.prisma
 COPY --chown=appuser:appgroup --from=build /app/src ./src
 COPY --chown=appuser:appgroup --from=build /app/package.json ./package.json
+COPY --chown=appuser:appgroup --from=build /app/package-lock.json ./package-lock.json
 COPY --chown=appuser:appgroup --from=build /app/prisma ./prisma
 
 # Droits & Port
