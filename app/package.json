@@ -29,5 +29,8 @@
         "node": ">=20.0.0"
     },
     "author": "Cloud Engineer",
-    "license": "ISC"
+    "license": "ISC",
+    "overrides": {
+        "tar": "^7.5.9"
+    }
 }
