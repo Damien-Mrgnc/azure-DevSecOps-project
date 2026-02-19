@@ -68,7 +68,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'runtime-governance-app:latest'
-          format: 'table'
+          # format: 'table' removed to see full details
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
