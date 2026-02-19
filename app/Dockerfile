@@ -27,8 +27,8 @@ WORKDIR /app
 # Sécurité : créer utilisateur non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-# Installer OpenSSL pour Prisma
-RUN apk add --no-cache openssl
+# Installer OpenSSL pour Prisma et supprimer NPM pour réduire la surface d'attaque
+RUN apk add --no-cache openssl && npm uninstall -g npm
 
 # Copier les fichiers nécessaires depuis les étapes précédentes avec les bonnes permissions
 COPY --chown=appuser:appgroup --from=dependencies /app/node_modules ./node_modules
@@ -46,5 +46,5 @@ ENV NODE_ENV=production
 ENV PORT=8080
 
 # Start command
-# Using npm start to run migrations before server startup
-CMD ["npm", "start"]
+# Using node direct execution instead of npm start to avoid npm vulnerabilities
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node src/server.js"]
