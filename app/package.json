@@ -20,7 +20,10 @@
         "winston": "^3.11.0",
         "zod": "^3.22.4",
         "cors": "^2.8.5",
-        "tar": "^7.5.9"
+        "cross-spawn": "7.0.6",
+        "glob": "11.1.0",
+        "minimatch": "10.2.1",
+        "tar": "7.5.9"
     },
     "devDependencies": {
         "prisma": "^5.9.1"
