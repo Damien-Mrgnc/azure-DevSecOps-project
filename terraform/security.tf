@@ -17,6 +17,15 @@ resource "azurerm_key_vault" "main" {
 
   sku_name = "standard"
 
+  # Grant Terraform executor (GitHub Actions OIDC app) rights to create/delete secrets
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions    = ["Get", "List", "Create", "Delete", "Recover", "Backup", "Restore", "Purge"]
+    secret_permissions = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"]
+  }
+
   tags = local.tags
 }
 
