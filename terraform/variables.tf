@@ -1,4 +1,4 @@
-﻿variable "project_name" {
+variable "project_name" {
   description = "A unique name for this project"
   type        = string
   default     = "projet1"
