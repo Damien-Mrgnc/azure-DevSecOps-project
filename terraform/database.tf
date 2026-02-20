@@ -8,7 +8,7 @@ resource "random_password" "sql_admin" {
 }
 
 resource "random_id" "server_suffix" {
-  byte_length = 4
+  byte_length = 5
 }
 
 resource "azurerm_mssql_server" "main" {
