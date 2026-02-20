@@ -1,0 +1,7 @@
+2026-02-20T14:30:15.123Z INFO Vulnerability scanning is enabled
+2026-02-20T14:30:15.123Z INFO Detected OS: alpine
+2026-02-20T14:30:15.123Z INFO Detecting vulnerabilities...
+
+acrprojet11665c35a.azurecr.io/runtime-governance-app:latest (alpine 3.19.1)
+
+Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)

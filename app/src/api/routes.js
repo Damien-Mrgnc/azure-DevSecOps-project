@@ -13,6 +13,7 @@ router.get('/config', async (req, res) => {
         const config = await configService.getConfig();
         res.json(config);
     } catch (error) {
+        console.error('API Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });

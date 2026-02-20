@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const logger = require('./config/logger');
-const apiRoutes = require('./api/routes');
 const { requireAuth, requireAdmin } = require('./middleware/auth');
 const configService = require('./services/configService');
 
