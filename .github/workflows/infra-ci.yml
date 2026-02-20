@@ -35,10 +35,17 @@ jobs:
 
       - name: Check Terraform formatting
         run: terraform fmt -check -recursive
-        continue-on-error: true # Set to true for now so the action doesn't fail immediately before you format your code
 
       - name: Terraform Init
         run: terraform init -backend=false # No need to connect to Azure Storage state just for syntax validation
 
       - name: Terraform Validate
         run: terraform validate
+
+      - name: Run Checkov Security Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./terraform
+          framework: terraform
+          quiet: true
+          soft_fail: true # Set to true temporarily to discover vulnerabilities without blocking the pipeline
