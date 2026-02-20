@@ -91,13 +91,13 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      packages: write # Pour attacher la signature Cosign
+      packages: write # To attach the Cosign signature
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Il faut se ré-authentifier à ACR dans ce nouveau job pour que Cosign et le déploiement fonctionnent.
+      # Re-authentication to Azure/ACR is required in this new job for Cosign and deployment to work properly.
       - name: Log into Azure
         uses: azure/login@v1
         with:
@@ -118,7 +118,7 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
       
-      # Intégration COSIGN (Signature Keyless)
+      # 🚀 COSIGN Integration (Keyless Signature)
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.4.0
         
