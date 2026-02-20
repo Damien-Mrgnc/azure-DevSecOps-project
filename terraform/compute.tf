@@ -16,11 +16,12 @@ resource "azurerm_service_plan" "main" {
 }
 
 resource "azurerm_linux_web_app" "main" {
-  name                = "app-${var.project_name}-${random_id.server_suffix.hex}"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_service_plan.main.location
-  service_plan_id     = azurerm_service_plan.main.id
-  https_only          = true
+  name                    = "app-${var.project_name}-${random_id.server_suffix.hex}"
+  resource_group_name     = azurerm_resource_group.main.name
+  location                = azurerm_service_plan.main.location
+  service_plan_id         = azurerm_service_plan.main.id
+  https_only              = true
+  client_affinity_enabled = false
 
   # Risk Acceptance for Lab:
   # checkov:skip=CKV_AZURE_13: "App Service Auth requires Entra ID application, keeping simple for lab"
@@ -40,12 +41,19 @@ resource "azurerm_linux_web_app" "main" {
       docker_image_name   = "nginxdemos/hello:latest"
       docker_registry_url = "https://index.docker.io"
     }
-    always_on           = true # Recommended for B1.
     app_command_line    = "npm start"
+    always_on           = true # Recommended for B1.
     ftps_state          = "Disabled"
     http2_enabled       = true
     minimum_tls_version = "1.2"
     health_check_path   = "/"
+
+    ip_restriction {
+      name       = "AllowAny"
+      priority   = 100
+      action     = "Allow"
+      ip_address = "0.0.0.0/0"
+    }
   }
 
   logs {
@@ -69,10 +77,8 @@ resource "azurerm_linux_web_app" "main" {
     "PORT"          = "8080"
     "NODE_ENV"      = "production"
 
-    # ACR Credentials (Fallback for when Role Assignment fails)
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.main.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.main.admin_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.main.admin_password
+    # ACR Credentials (Identity Based - Requires AcrPull Role Assigned to SystemIdentity)
+    "DOCKER_REGISTRY_SERVER_URL" = "https://${azurerm_container_registry.main.login_server}"
 
     "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.main.instrumentation_key
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.main.connection_string
