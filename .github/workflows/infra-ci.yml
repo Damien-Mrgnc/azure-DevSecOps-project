@@ -19,6 +19,9 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  TF_VAR_alert_email: "${{ secrets.ALERT_EMAIL }}"
+
 jobs:
   lint-and-validate:
     name: Terraform Lint & Validate
