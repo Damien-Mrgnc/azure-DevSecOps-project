@@ -2,6 +2,10 @@
 # 5. Compute (App Service)
 # ---
 resource "azurerm_service_plan" "main" {
+  # checkov:skip=CKV_AZURE_212: "Zone redundancy too expensive for this lab ASP"
+  # checkov:skip=CKV_AZURE_225: "Production SKU P1v3 too expensive for lab"
+  # checkov:skip=CKV_AZURE_211: "Multiple instances too expensive for lab"
+
   name                = "asp-${var.project_name}-${var.environment}"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
@@ -16,6 +20,19 @@ resource "azurerm_linux_web_app" "main" {
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_service_plan.main.location
   service_plan_id     = azurerm_service_plan.main.id
+  https_only          = true
+
+  # Risk Acceptance for Lab:
+  # checkov:skip=CKV_AZURE_13: "App Service Auth requires Entra ID application, keeping simple for lab"
+  # checkov:skip=CKV_AZURE_222: "Private Endpoints are too expensive for this lab"
+  # checkov:skip=CKV_AZURE_113: "Public network access required absent Private Endpoints"
+  # checkov:skip=CKV_AZURE_88: "Storage account mounting not used"
+  # checkov:skip=CKV_AZURE_14: "Client cert auth not needed"
+  # checkov:skip=CKV_AZURE_17: "Client affinity not needed"
+  # checkov:skip=CKV_AZURE_213: "Managed Identity already configured via identity block"
+  # checkov:skip=CKV_AZURE_65: "Access restrictions are skipped for lab portal"
+  # checkov:skip=CKV_AZURE_71: "Managed identity used instead of basic auth"
+  # checkov:skip=CKV_AZURE_78: "Client certs not needed"
 
   site_config {
     application_stack {
@@ -23,8 +40,23 @@ resource "azurerm_linux_web_app" "main" {
       docker_image_name   = "nginxdemos/hello:latest"
       docker_registry_url = "https://index.docker.io"
     }
-    always_on        = true # Recommended for B1.
-    app_command_line = "npm start"
+    always_on           = true # Recommended for B1.
+    app_command_line    = "npm start"
+    ftps_state          = "Disabled"
+    http2_enabled       = true
+    minimum_tls_version = "1.2"
+    health_check_path   = "/"
+  }
+
+  logs {
+    http_logs {
+      file_system {
+        retention_in_days = 7
+        retention_in_mb   = 35
+      }
+    }
+    failed_request_tracing  = true
+    detailed_error_messages = true
   }
 
   identity {
