@@ -1,0 +1,44 @@
+name: Infra CI
+
+on:
+  push:
+    branches: 
+      - main
+      - 'feat/**' 
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/infra-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/infra-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  lint-and-validate:
+    name: Terraform Lint & Validate
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0" # or 'latest'
+
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+        continue-on-error: true # Set to true for now so the action doesn't fail immediately before you format your code
+
+      - name: Terraform Init
+        run: terraform init -backend=false # No need to connect to Azure Storage state just for syntax validation
+
+      - name: Terraform Validate
+        run: terraform validate
