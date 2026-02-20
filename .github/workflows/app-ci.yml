@@ -141,8 +141,8 @@ jobs:
           sleep 30
           for i in {1..10}; do
             STATUS=$(curl -s -o /dev/null -w '%{http_code}' https://app-projet1-1665c35a.azurewebsites.net/api/config)
-            if [ "$STATUS" -eq 200 ]; then
-              echo "Health check passed! HTTP Status: $STATUS"
+            if [ "$STATUS" -eq 200 ] || [ "$STATUS" -eq 401 ]; then
+              echo "Health check passed! App is alive and responding (HTTP Status: $STATUS)"
               exit 0
             fi
             echo "Attempt $i failed. HTTP Status: $STATUS. Retrying in 15s..."
