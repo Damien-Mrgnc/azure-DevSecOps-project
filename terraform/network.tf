@@ -37,9 +37,17 @@ resource "azurerm_network_security_group" "public_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "443"
-    source_address_prefix      = "Internet" # Secured via Service Tag restriction
+    source_address_prefix      = "Internet"
     destination_address_prefix = "*"
   }
+
+  tags = local.tags
+}
+
+resource "azurerm_network_security_group" "private_nsg" {
+  name                = "nsg-${var.project_name}-private"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 
   tags = local.tags
 }
@@ -47,4 +55,9 @@ resource "azurerm_network_security_group" "public_nsg" {
 resource "azurerm_subnet_network_security_group_association" "public" {
   subnet_id                 = azurerm_subnet.public.id
   network_security_group_id = azurerm_network_security_group.public_nsg.id
+}
+
+resource "azurerm_subnet_network_security_group_association" "private" {
+  subnet_id                 = azurerm_subnet.private.id
+  network_security_group_id = azurerm_network_security_group.private_nsg.id
 }

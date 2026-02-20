@@ -15,13 +15,16 @@ resource "azurerm_container_registry" "main" {
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   sku                 = "Basic"
-  admin_enabled       = true # Useful for local debugging / admin user
+  admin_enabled       = false # Sécurité : Admin désactivé, authentification via Managed Identity uniquement.
 
   tags = local.tags
 }
 
 # ---
-# Role Assignment: Allow App Service to Pull Images
-# REMOVED: Requires 'Owner' or 'User Access Administrator' permissions which the SP might not have.
-# We will use ACR Admin Credentials in compute.tf instead.
+# Role Assignment: Allow App Service to Pull Images via System Assigned Identity
 # ---
+resource "azurerm_role_assignment" "acr_pull" {
+  scope                = azurerm_container_registry.main.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_linux_web_app.main.identity[0].principal_id
+}
