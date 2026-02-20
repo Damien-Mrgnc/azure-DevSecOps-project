@@ -85,7 +85,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Login to ACR
-        run: az acr login --name acrprojet11665c35a
+        run: az acr login --name acrprojet155906d7d9b
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and Push Docker Image
@@ -94,8 +94,8 @@ jobs:
           context: ./app
           push: true
           tags: |
-            acrprojet11665c35a.azurecr.io/runtime-governance-app:latest
-            acrprojet11665c35a.azurecr.io/runtime-governance-app:${{ github.sha }}
+            acrprojet155906d7d9b.azurecr.io/runtime-governance-app:latest
+            acrprojet155906d7d9b.azurecr.io/runtime-governance-app:${{ github.sha }}
           no-cache: true 
 
   container-scan:
@@ -114,11 +114,11 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Login to ACR
-        run: az acr login --name acrprojet11665c35a
+        run: az acr login --name acrprojet155906d7d9b
       - name: Run Trivy vulnerability scanner on image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'acrprojet11665c35a.azurecr.io/runtime-governance-app:${{ github.sha }}'
+          image-ref: 'acrprojet155906d7d9b.azurecr.io/runtime-governance-app:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -142,12 +142,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Login to ACR
-        run: az acr login --name acrprojet11665c35a
+        run: az acr login --name acrprojet155906d7d9b
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.4.0
       - name: Sign the published Docker image
         env:
-          IMAGE_TAG: acrprojet11665c35a.azurecr.io/runtime-governance-app:${{ github.sha }}
+          IMAGE_TAG: acrprojet155906d7d9b.azurecr.io/runtime-governance-app:${{ github.sha }}
         run: |
           cosign sign --yes ${IMAGE_TAG}
 
@@ -169,14 +169,14 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'app-projet1-1665c35a'
-          images: 'acrprojet11665c35a.azurecr.io/runtime-governance-app:${{ github.sha }}'
+          app-name: 'app-projet1-55906d7d9b'
+          images: 'acrprojet155906d7d9b.azurecr.io/runtime-governance-app:${{ github.sha }}'
       - name: Health Check
         run: |
           echo "Waiting for app to start..."
           sleep 30
           for i in {1..10}; do
-            STATUS=$(curl -s -o /dev/null -w '%{http_code}' https://app-projet1-1665c35a.azurewebsites.net/api/config)
+            STATUS=$(curl -s -o /dev/null -w '%{http_code}' https://app-projet1-55906d7d9b.azurewebsites.net/api/config)
             if [ "$STATUS" -eq 200 ] || [ "$STATUS" -eq 401 ]; then
               echo "Health check passed! App is alive and responding (HTTP Status: $STATUS)"
               exit 0
