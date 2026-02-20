@@ -42,10 +42,63 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
+  security-scan:
+    name: IaC Security Scan (Checkov)
+    runs-on: ubuntu-latest
+    needs: lint-and-validate
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Run Checkov Security Scan
         uses: bridgecrewio/checkov-action@master
         with:
           directory: ./terraform
           framework: terraform
           quiet: true
-          soft_fail: true # Set to true temporarily to discover vulnerabilities without blocking the pipeline
+          soft_fail: true # Temporarily set to true to find vulnerabilities without blocking
+
+  terraform-plan:
+    name: Terraform Plan Execution
+    runs-on: ubuntu-latest
+    needs: security-scan
+    permissions:
+      contents: read
+      id-token: write
+
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log into Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Terraform Init (With Azure Backend)
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
+        run: terraform init
+
+      - name: Terraform Plan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
+        run: terraform plan -out=tfplan
