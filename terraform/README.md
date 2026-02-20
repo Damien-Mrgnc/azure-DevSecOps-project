@@ -3,6 +3,9 @@
 ## Description
 This folder contains all Terraform manifests required for deploying the infrastructure on Microsoft Azure. The architecture is modular and follows security and maintainability best practices.
 
+**Note on Security & Costs (Lab Mode):**
+Some enterprise-grade security features (Private Endpoints, ACR Premium, SQL Zone Redundancy, Vulnerability Assessment) are intentionally disabled in LAB mode to keep Azure costs minimal.
+
 ## File Structure
 The infrastructure is logically split:
 
