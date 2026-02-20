@@ -56,6 +56,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: write # Pour attacher la signature Cosign
     # No global working-directory here to keep paths correct for Docker
 
     steps:
@@ -95,6 +96,17 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
       
+      # 🚀 Intégration COSIGN (Signature Keyless)
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.4.0
+        
+      - name: Sign the published Docker image
+        env:
+          # On signe avec the tag immutable sha
+          IMAGE_TAG: acrprojet11665c35a.azurecr.io/runtime-governance-app:${{ github.sha }}
+        run: |
+          cosign sign --yes ${IMAGE_TAG}
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:

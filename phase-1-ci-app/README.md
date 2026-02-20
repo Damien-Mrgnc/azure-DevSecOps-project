@@ -11,6 +11,7 @@ This phase is architected into distinct sub-modules to enforce DevSecOps best pr
 2. [**Step 2: Container Build, Vulnerability Scanning (Trivy), and Delivery**](./02-build-scan-push-docker/README.md) *(Completed)*
 3. [**Step 3: Azure App Service Deployment via OIDC**](./03-deploiement-appservice/README.md) *(Completed)*
 4. [**Step 4: Static Application Security Testing (SAST) with SonarCloud**](./04-sast-sonarcloud/README.md) *(Completed)*
+5. [**Step 5: Cryptographic Image Signing (Cosign Sigstore)**](./05-image-signing/README.md) *(Optional/Pending)*
 
 ---
 
@@ -21,3 +22,4 @@ This phase is architected into distinct sub-modules to enforce DevSecOps best pr
 - **Trivy (Aqua Security)**: Comprehensive container vulnerability scanner.
 - **Azure Container Registry (ACR)**: Secure hosting architecture for enterprise containers.
 - **SonarCloud**: Advanced static code analyzer and continuous inspection engine.
+- **Cosign (Sigstore)**: Cryptographic signature framework guaranteeing container integrity (Keyless mode).
