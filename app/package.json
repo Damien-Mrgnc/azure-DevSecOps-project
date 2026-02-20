@@ -36,6 +36,9 @@
     "author": "Cloud Engineer",
     "license": "ISC",
     "overrides": {
+        "jake": {
+            "minimatch": "10.2.1"
+        },
         "cross-spawn": "7.0.6",
         "tar": "7.5.9"
     }
