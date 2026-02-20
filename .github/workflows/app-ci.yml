@@ -134,3 +134,19 @@ jobs:
         with:
           app-name: 'app-projet1-1665c35a'
           images: 'acrprojet11665c35a.azurecr.io/runtime-governance-app:${{ github.sha }}'
+
+      - name: Health Check
+        run: |
+          echo "Waiting for app to start..."
+          sleep 30
+          for i in {1..10}; do
+            STATUS=$(curl -s -o /dev/null -w '%{http_code}' https://app-projet1-1665c35a.azurewebsites.net/api/config)
+            if [ "$STATUS" -eq 200 ]; then
+              echo "Health check passed! HTTP Status: $STATUS"
+              exit 0
+            fi
+            echo "Attempt $i failed. HTTP Status: $STATUS. Retrying in 15s..."
+            sleep 15
+          done
+          echo "Health check failed."
+          exit 1
