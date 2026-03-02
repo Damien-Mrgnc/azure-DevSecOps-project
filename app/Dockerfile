@@ -27,8 +27,8 @@ WORKDIR /app
 # Sécurité : créer utilisateur non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-# Installer OpenSSL pour Prisma et mettre à jour NPM pour corriger les vulnérabilités
-RUN apk add --no-cache openssl && npm install -g npm@latest
+# Installer OpenSSL pour Prisma et supprimer NPM (pour nettoyer la vulnérabilité globale minimatch CVE-2026-27903 de Trivy)
+RUN apk add --no-cache openssl && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 # Copier les fichiers nécessaires depuis les étapes précédentes avec les bonnes permissions
 COPY --chown=appuser:appgroup --from=dependencies /app/node_modules ./node_modules
@@ -47,4 +47,4 @@ ENV NODE_ENV=production
 ENV PORT=8080
 
 # Start command
-CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node src/server.js"]
+CMD ["/bin/sh", "-c", "./node_modules/.bin/prisma migrate deploy && node src/server.js"]
