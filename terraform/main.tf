@@ -1,4 +1,4 @@
-# Local variables for resource naming convention
+# Local variables for resource naming convention (force apply)
 locals {
   resource_group_name = "rg-${var.project_name}-${var.environment}"
   location            = var.location
