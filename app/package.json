@@ -1,7 +1,7 @@
 {
     "name": "runtime-governance-app",
     "version": "1.0.0",
-    "description": "Application de gouvernance dynamique avec configuration sans redéploiement.",
+    "description": "Application de gouvernance dynamique avec configuration sans redéploiement",
     "main": "src/server.js",
     "scripts": {
         "start": "npx prisma migrate deploy && node src/server.js",
