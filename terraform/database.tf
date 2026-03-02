@@ -45,3 +45,10 @@ resource "azurerm_mssql_database" "main" {
   tags = local.tags
 }
 
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
+  # checkov:skip=CKV_AZURE_11: "Ensure database is not publicly accessible - required for App Service to reach SQL Database in a lab context without VNet/Private Link."
+  name             = "AllowAzureServices"
+  server_id        = azurerm_mssql_server.main.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
+}
