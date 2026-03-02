@@ -36,6 +36,8 @@ resource "azurerm_linux_web_app" "main" {
   # checkov:skip=CKV_AZURE_78: "Client certs not needed"
 
   site_config {
+    container_registry_use_managed_identity = true
+
     application_stack {
       # Initial image (hello world), will be overwritten by CI/CD
       docker_image_name   = "nginxdemos/hello:latest"
