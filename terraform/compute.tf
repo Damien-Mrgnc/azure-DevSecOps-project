@@ -43,7 +43,7 @@ resource "azurerm_linux_web_app" "main" {
       docker_image_name   = "nginxdemos/hello:latest"
       docker_registry_url = "https://index.docker.io"
     }
-    app_command_line    = "npm start"
+    app_command_line    = ""
     always_on           = true # Recommended for B1.
     ftps_state          = "Disabled"
     http2_enabled       = true
