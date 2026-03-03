@@ -208,6 +208,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: 'https://app-projet1-55906d7d9b.azurewebsites.net'
-          fail_action: false # Ne pas bloquer le pipeline en cas d'alertes ZAP par défaut
+          fail_action: false
+          artifact_name: 'zap-scan-report'
 
 
