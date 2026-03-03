@@ -6,7 +6,7 @@ The architecture encompasses the entire lifecycle, from code commit (Node.js) to
 
 *Read the [French Version (Version Française)](README_FR.md) here.*
 
-## 🚀 Project Phases
+## Project Phases
 This project is deeply documented and structured logically into progressive DevSecOps capability phases:
 
 ### [Phase 0: Initialization](./phase-0-initialisation/README.md)
@@ -39,7 +39,7 @@ Runtime vulnerability hunting loop.
 - End-to-End audit trail attached to each CI/CD release.
 
 ---
-## 🛠 Technology Stack
+## Technology Stack
 - **Source Control / CI-CD:** GitHub / GitHub Actions
 - **Cloud Provider:** Microsoft Azure
 - **Infrastructure as Code:** Terraform

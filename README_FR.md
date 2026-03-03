@@ -6,7 +6,7 @@ L'architecture englobe la totalité du cycle de vie du logiciel, de la validatio
 
 *Read the [English Version (Version Anglaise)](README.md) here.*
 
-## 🚀 Les Phases du Projet
+## Les Phases du Projet
 L'évolution DevOps de ce projet de bout en bout est structurée logiquement en blocs techniques, avec une documentation locale étape par étape :
 
 ### [Phase 0 : Initialisation](./phase-0-initialisation/README_FR.md)
@@ -39,7 +39,7 @@ Boucle de Rétroaction en Production.
 - Génération d'artefacts et rapports de vulnérabilités pour chaque release.
 
 ---
-## 🛠 Stack Technique & DevSecOps
+## Stack Technique & DevSecOps
 - **Stockage & CI-CD:** GitHub / GitHub Actions
 - **Fournisseur Cloud:** Microsoft Azure
 - **Infrastructure-as-Code:** Terraform
