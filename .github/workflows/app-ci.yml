@@ -193,9 +193,18 @@ jobs:
     needs: deploy
     environment: production
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create required files and fix permissions
+        run: |
+          touch zap.yaml
+          chmod 777 . zap.yaml
+
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: 'https://app-projet1-55906d7d9b.azurewebsites.net'
           fail_action: false # Ne pas bloquer le pipeline en cas d'alertes ZAP par défaut
+
 
