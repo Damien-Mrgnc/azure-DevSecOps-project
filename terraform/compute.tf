@@ -39,9 +39,10 @@ resource "azurerm_linux_web_app" "main" {
     container_registry_use_managed_identity = true
 
     application_stack {
-      # Initial image (hello world), will be overwritten by CI/CD
-      docker_image_name   = "nginxdemos/hello:latest"
-      docker_registry_url = "https://index.docker.io"
+      # Point directly so Terraform infra-ci doesn't revert to docker hub
+      docker_image_name   = "runtime-governance-app:latest"
+      docker_registry_url = "https://${azurerm_container_registry.main.login_server}"
+
     }
     app_command_line    = ""
     always_on           = true # Recommended for B1.
